@@ -64,6 +64,8 @@ Editar un archivo remoto:
 
     nvim scp://user@x.x.x.x//home/remote_user/file
 
+
+
 Editar el tamaño de fuente:
 
     setfont Lat38-TerminusBold28x14.psf.gz
@@ -71,3 +73,107 @@ Editar el tamaño de fuente:
 Ruta de default console fonts:
 
 	/etc/default/console-setup
+
+---
+
+### VIRSH
+
+Crear una nueva red nat
+
+    sudo virsh net-create [PATH XML FILE]
+    sudo virsh net-create ~/nat2.xml
+    sudo virsh net-list
+
+Configurar interface virtual 'virbr1', una vez editada tenemos que redefinirla
+
+    sudo virsh net-edit --network [NETWORK]
+    sudo virsh net-edit --network nat2
+    sudo virsh net-define [PATH]
+    sudo virsh net-define /etc/libvirt/qemu/networks/nat2.xml
+
+Listar todas las redes disponibles
+
+    sudo virsh net-list --all
+
+Iniciar una red virtual
+
+    sudo virsh net-start --network [NETWORK]
+    sudo virsh net-start --network nat2
+
+Detener la red virtual
+
+    sudo virsh net-destroy --network [NETWORK]
+    sudo virsh net-destroy --network nat2
+
+Desactiva el autostart de una red
+
+    sudo virsh net-autostart --network [NETWORK] --disable
+    sudo virsh net-autostart --network nat2 --disable
+
+Eliminar por completo la red virtual
+
+    sudo virsh net-undefine --network [NETWORK]
+    sudo virsh net-undefine --network nat2
+
+Ruta de los archivos de red
+
+    /etc/libvirt/qemu/networks
+
+Listar todas las máquinas virtuales, así como también las máquinas que están corriendo
+
+    sudo virsh list --all
+    sudo virsh --state-running
+
+Iniciar una máquina virtual
+
+    sudo virsh start [MV NAME]
+    sudo virsh start Alma
+
+---
+
+### Generador de UUID's
+
+Generar UUID's
+
+    uuidgen
+
+---
+
+### Cambiar contraseña
+
+Cambiar contraseña recibiendo entrada stdin
+
+    echo 'user:user' | chpasswd
+    echo 'luisam:luisam' | chpasswd
+
+---
+
+### Uso de sshpass
+
+Uso básico
+
+    sshpass -p [PASSWORD] ssh [USER@IP]
+    sshpass -p root ssh root@10.0.0.1
+
+Uso básico sin preguntar el hostchecking
+
+    sshpass -p [PASSWORD] ssh -o StrictHostKeyChecking=no [USER:IP]
+    sshpass -p root ssh -o StrictHostKeyChecking=no root@10.0.0.12
+
+Tomando como entrada un file
+
+    sshpass -f [FILE] ssh [USER:IP]
+    sshpass -f passw.txt ssh root@10.0.0.12
+
+Tomando como entrada el valor de una variable
+
+    SSHPASS="[FILE]" sshpass -e [USER:IP]
+    SSHPASS="passwd" sshpass -e root@10.0.0.12
+
+---
+
+### Gestión de trusted-keys
+
+Listar todas las GPG keys
+
+    sudo apt-key list
